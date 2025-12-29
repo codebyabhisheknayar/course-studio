@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,8 @@ export class Login {
  private http = inject(HttpClient);
  private router = inject(Router);
 
+ error = signal<string>('');
+
   loginUser: any = {
     email: 'chetan@gmail.com',
     password: 'admin',
@@ -27,7 +29,7 @@ export class Login {
         this.router.navigateByUrl('dashboard');
       },
       error:(err=>{
-        console.error('Error in api');
+        this.error.set(err.error.message);
       })
     })
   }
